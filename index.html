@@ -29,10 +29,13 @@ label{font-size:12px;font-weight:700;display:block;margin-bottom:2px}
 input,select{font-family:inherit;font-size:13px;padding:6px 8px;border:1.5px solid #b9c5c0;border-radius:7px;background:#fff}
 input:focus,select:focus{outline:2px solid var(--inst)}
 .f{flex:1;min-width:140px}
-.med-row{padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:10px;background:#fafbfa}
-.mr1{display:grid;grid-template-columns:1.1fr .95fr 200px 118px 132px 128px 128px 26px;gap:8px;align-items:end}
+.med-row{padding:14px 14px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:12px;background:#fafbfa;position:relative}
+.med-row .del{position:absolute;top:10px;right:10px;background:#fff;border:1px solid var(--line);color:#a13a3a;font-weight:700;width:26px;height:26px;border-radius:6px;cursor:pointer;padding:0;line-height:1}
+.med-row .del:hover{background:#fde8e8;border-color:#a13a3a}
+.mr1{display:grid;grid-template-columns:1.4fr 1.2fr 1.5fr;gap:12px;align-items:end;padding-right:36px}
+.mr-cfg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:end;margin-top:10px;padding-top:10px;border-top:1px dashed #cfd8d4}
 .mr2{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px;padding-top:9px;border-top:1px dashed #cfd8d4}
-.mr1 select,.mr1 input{width:100%}
+.mr1 select,.mr1 input,.mr-cfg select,.mr-cfg input{width:100%}
 .mr2 select,.mr2 input{width:100%;text-align:center;font-weight:700}
 .med-row .dose input{width:100%;text-align:center}
 .dose label{font-weight:400;font-size:10.5px;text-align:center}
@@ -426,21 +429,26 @@ function addMed(data){
   div.className = 'med-row';
   div.id = 'm'+id;
   div.innerHTML =
+    // FILA 1: Info textual del medicamento (nombre, posologia, uso+icono)
+    "<button class='del' title='Eliminar medicamento' onclick='this.closest(\".med-row\").remove()'>X</button>" +
     "<div class='mr1'>" +
       "<div><label>Medicamento</label><input class='mnom' placeholder='Losartan 50 mg comprimidos'></div>" +
       "<div><label>Posolog&#237;a</label><input class='mpos' placeholder='1 comprimido cada 12 horas'></div>" +
-      "<div><label>Uso (opcional) <span style='font-weight:400;color:#5a6a72;font-size:11px'>+ &#237;cono</span></label>" +
-        "<div style='display:flex;gap:5px;align-items:stretch'>" +
+      "<div><label>Uso (opcional) <span style='font-weight:400;color:#5a6a72;font-size:11px'>+ &#237;cono para la pauta</span></label>" +
+        "<div style='display:flex;gap:6px;align-items:stretch'>" +
           "<input class='muso' list='dl-uso' maxlength='30' placeholder='Ej. Presi&#243;n alta' style='flex:1;min-width:0'>" +
-          "<select class='micono' title='&#205;cono para la pauta' style='width:88px;flex:0 0 88px'>" + iconOpts + "</select>" +
+          "<select class='micono' title='&#205;cono para la pauta' style='width:100px;flex:0 0 100px'>" + iconOpts + "</select>" +
         "</div>" +
       "</div>" +
-      "<div><label>S&#237;mbolo</label><div style='display:flex;gap:6px;align-items:center'><select class='msim' onchange='prev("+id+")'>"+opts+"</select><span class='symprev' id='p"+id+"'></span></div></div>" +
+    "</div>" +
+    // FILA 2: Configuracion clinica (simbolo, forma, horario, alimentos)
+    "<div class='mr-cfg'>" +
+      "<div><label>S&#237;mbolo identificador</label><div style='display:flex;gap:6px;align-items:center'><select class='msim' onchange='prev("+id+")' style='flex:1;min-width:0'>"+opts+"</select><span class='symprev' id='p"+id+"'></span></div></div>" +
       "<div><label>Forma farmac&#233;utica</label><select class='mforma' onchange='formaChg("+id+")'>"+fopts+"</select></div>" +
       "<div><label>Horario o condici&#243;n</label><select class='msos' onchange='formaChg("+id+")'>"+sopts+"</select></div>" +
       "<div><label>Relaci&#243;n con alimentos</label><select class='mcomida'>"+copts+"</select></div>" +
-      "<button class='del' title='Eliminar' onclick='this.closest(\".med-row\").remove()'>X</button>" +
     "</div>" +
+    // FILA 3: Grilla de dosis (existente)
     "<div class='mr2' id='dz"+id+"'></div>";
   document.getElementById('meds').appendChild(div);
   if(data){

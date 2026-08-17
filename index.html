@@ -60,7 +60,7 @@ input:focus,select:focus{outline:none;border-color:var(--inst);box-shadow:0 0 0 
 .lbl{width:100mm;height:60mm;background:#fff;border:1px dashed #9aa8a3;padding:1mm 2mm;display:flex;flex-direction:column;color:#000;font-family:'Atkinson Hyperlegible',Arial,sans-serif;overflow:hidden}
 /* Barra superior e inferior compactas (trazabilidad, no para el paciente) */
 .lbl .top{display:none}
-.lbl .bot{display:flex;justify-content:space-between;font-size:7.5px;color:#5a6a66;margin-top:.5mm;flex:0 0 auto}
+
 /* ZONA A: simbolo grande + nombre del medicamento */
 .lbl .zoneA{display:flex;gap:1.5mm;align-items:stretch;flex:0 0 auto;height:26mm;margin-top:.5mm}
 .lbl .sym{width:22mm;flex:0 0 22mm;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 .5mm}
@@ -588,7 +588,7 @@ function generar(){
         foodHtml +
       "</div>" +
       zonaB +
-      "<div class='bot'><span>"+(e.estab||'CESFAM')+"</span><span>QF: "+(e.qf||'')+"</span></div>";
+      "";
     cont.appendChild(lbl);
   });
   document.getElementById('lblhint').textContent = e.meds.length+' etiqueta(s) generada(s).';
